@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexis' Birthday Adventure</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@500;700;800;900&display=swap');
+:root{--ink:#18304b;--blue:#68c9ed;--sky:#b9edff;--green:#70c96b;--darkgreen:#348b55;--yellow:#ffe27a;--cream:#fff9e9;--pink:#ff9fbd;--red:#f06d70}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(#8fddfa 0%,#d9f7ff 65%,#b4e9a2 65%,#8bd17e 100%);color:var(--ink);font-family:Nunito,system-ui,sans-serif;overflow-x:hidden}
+.pixel{font-family:'Press Start 2P',monospace;line-height:1.65}.wrap{width:min(720px,94vw);margin:0 auto;padding:22px 0 42px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;font-weight:900}.pill{background:#fff9e9;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:8px 12px;border-radius:7px}.screen{display:none;background:var(--cream);border:4px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 var(--ink);padding:clamp(18px,4vw,32px);margin:25px 4px 0;position:relative}.screen.active{display:block}.hero{text-align:center;padding:28px 8px}.hero h1{font-size:clamp(19px,4vw,30px);margin:15px 0;color:#ed6687;text-shadow:2px 2px #ffe27a}.hero p{font-size:17px;line-height:1.6}.pixel-art{font-size:55px;filter:drop-shadow(3px 4px 0 #18304b);margin:8px}.btn{border:3px solid var(--ink);background:var(--yellow);color:var(--ink);font-weight:900;font-size:16px;padding:13px 19px;border-radius:8px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;transition:transform .1s; margin:7px}.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}.btn.secondary{background:#b9e9ff}.btn.pink{background:#ffb5ca}.tiny{font-size:10px}.progress{height:14px;border:3px solid var(--ink);background:white;border-radius:20px;overflow:hidden;margin:18px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#7bd56f,#ffe27a);transition:width .25s}.qnum{color:#398caa;font-weight:900;font-size:13px}.question{font-size:clamp(16px,3vw,21px);font-weight:900;line-height:1.4;margin:13px 0 18px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}.answer{background:#fff;border:3px solid var(--ink);border-radius:9px;padding:14px 10px;font-size:15px;font-weight:900;cursor:pointer;box-shadow:3px 3px 0 #a8bdc8;text-align:left}.answer:hover{background:#fff1b8}.answer:disabled{cursor:default;opacity:.8}.feedback{min-height:27px;font-weight:900;margin:14px 0 2px}.good{color:#26864b}.bad{color:#d65b67}.scene{background:linear-gradient(#79d5f5 0 72%,#75c86b 72%);border:4px solid var(--ink);border-radius:10px;padding:12px;overflow:hidden}.hud{display:flex;justify-content:space-between;font-size:11px;font-weight:900;margin-bottom:8px}.gamecanvas{display:block;width:100%;height:auto;image-rendering:pixelated;background:#8edcf6;border:2px solid #24425b;border-radius:4px;touch-action:none}.gamehelp{text-align:center;font-size:14px;line-height:1.5;font-weight:800;margin:12px 0}.controls{display:flex;justify-content:center;gap:16px;margin:12px 0}.control{width:68px;height:56px;font-size:23px;padding:0;background:#fff;border:3px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--ink);touch-action:none}.letter{background:#fffdf5;border:2px dashed #eaa1b4;padding:19px;border-radius:9px;line-height:1.8;font-size:15px;white-space:normal}.letter h3{text-align:center;color:#e46d8d}.end{text-align:center}.hidden{display:none!important}.cloud{position:fixed;font-size:35px;opacity:.7;pointer-events:none;z-index:-1}.c1{top:10%;left:3%}.c2{top:23%;right:4%}.c3{bottom:8%;left:5%}
+@media(max-width:480px){.answers{grid-template-columns:1fr}.screen{padding:17px}.top{font-size:10px}.letter{font-size:14px}.hero p{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="cloud c1">☁️</div><div class="cloud c2">☁️</div><div class="cloud c3">☁️</div>
+<div class="wrap">
+ <div class="top"><span class="pill">⭐ BIRTHDAY ADVENTURE</span><span class="pill">PLAYER: ALEXIS</span></div>
+ <section id="intro" class="screen active hero">
+  <div class="pixel-art">🏰🌤️</div>
+  <div class="pixel" style="font-size:clamp(17px,3.8vw,25px);color:#348b55">ALEXIS' QUEST</div>
+  <h1 class="pixel">LEVEL 20 UNLOCKED!</h1>
+  <p>A birthday adventure awaits! First, answer 5 general knowledge questions. Then, take on a tiny platform game to reach your final surprise.</p>
+  <p><b>Ready, birthday player?</b></p>
+  <button class="btn" onclick="startQuiz()">START ADVENTURE ▶</button>
+  <div class="tiny" style="margin-top:17px">✨ 5 QUESTIONS · 1 MINI GAME · 1 SECRET LETTER ✨</div>
+ </section>
+ <section id="quiz" class="screen">
+  <div class="qnum" id="qnum">QUESTION 1 OF 5</div><div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div>
+  <div style="text-align:right"><button id="next" class="btn hidden" onclick="nextQuestion()">NEXT ▶</button></div>
+ </section>
+ <section id="gameIntro" class="screen hero">
+  <div class="pixel-art">🍄⭐🏁</div><h2 class="pixel" style="font-size:clamp(15px,3vw,21px);color:#348b55">BONUS LEVEL!</h2>
+  <p>You cleared the trivia round! Now it's time for a little classic-style platform challenge.</p>
+  <p><b>Collect 5 stars and reach the flag!</b></p>
+  <p class="tiny">Move with the arrow buttons or keyboard. Jump over the gaps and avoid the little roaming baddies.</p>
+  <button class="btn" onclick="beginGame()">PLAY MINI GAME ▶</button>
+ </section>
+ <section id="game" class="screen">
+  <div class="hud"><span>⭐ STARS: <b id="starCount">0</b>/5</span><span>🏁 REACH THE FLAG!</span></div>
+  <div class="scene"><canvas id="gameCanvas" class="gamecanvas" width="640" height="300" aria-label="A small platform game"></canvas></div>
+  <div class="gamehelp" id="gameHelp">Collect all 5 stars, then reach the flag!</div>
+  <div class="controls"><button class="control" id="left">◀</button><button class="control" id="jump">⬆</button><button class="control" id="right">▶</button></div>
+  <div class="end"><button id="restart" class="btn secondary hidden" onclick="resetGame()">TRY AGAIN ↻</button></div>
+ </section>
+ <section id="letter" class="screen">
+  <div class="hero" style="padding:5px 0 15px"><div class="pixel-art">🏆💌🎂</div><h2 class="pixel" style="font-size:clamp(15px,3vw,21px);color:#e46d8d">QUEST COMPLETE!</h2><p>You made it to the end! Your final birthday surprise has arrived.</p></div>
+  <div class="letter">
+   <h3>HAPPIEST BIRTHDAY, ALEXIS! ♡</h3>
+   Hiiiiii, nakkkkkkkk! Happy birthday!!!!!! Gurang ka na talaga, langgaaaaa — 20 na HAHAHAHA!<br><br>
+   Pero ano, first things first: I'm happy to greet you this year, kahit ngayon man lang. But I promise to greet you every birthday from now on HAHAHAHA.<br><br>
+   I hope all your wishes come true and that you become successful in the future. May God guide and protect you always — not just you, but your entire family, too.<br><br>
+   I'm really happy I got to meet you this year. You're the plot twist of my 2026 HAHAHAHA! And I'm happy kasi kahit hindi pa tayo gano'n katagal magkakilala, close na tayo. Likeeee, would you look at that? Super amazing!<br><br>
+   You're so nice and humorous. May you never lose your spark, your kindness, and the way you make conversations fun. Always put God at the center of your life.<br><br>
+   And uhmmmm, thank you pala for being a Kuya to me, for giving me advice, and for letting me chika with you. I appreciate it more than you know.<br><br>
+   So, yun lang naman. Happy birthday, langgaaaaa! Enjoy your day! 💐🥳🎉<br><br>
+   <b>P.S.</b> Parang Kuya ka, pero you're not my Kuya kasi likes kita HAHAHA. 🙈<br><br>
+   <b>— Anica imnida ♡</b>
+  </div>
+  <div class="end" style="margin-top:18px"><button class="btn pink" onclick="alert('Happy birthday, Alexis! 🎂⭐')">ONE MORE HAPPY BIRTHDAY! 🎉</button></div>
+ </section>
+</div>
+<script>
+const questions=[
+ {q:'Which planet is known as the Red Planet?',a:['Venus','Mars','Jupiter','Mercury'],c:1},
+ {q:'How many sides does a hexagon have?',a:['Five','Six','Seven','Eight'],c:1},
+ {q:'What is the largest ocean on Earth?',a:['Atlantic Ocean','Indian Ocean','Pacific Ocean','Arctic Ocean'],c:2},
+ {q:'Which animal is known as the King of the Jungle?',a:['Tiger','Elephant','Lion','Giraffe'],c:2},
+ {q:'What is the main ingredient in traditional guacamole?',a:['Cucumber','Avocado','Peas','Spinach'],c:1}
+];
+let qi=0,score=0,answered=false;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+function startQuiz(){qi=0;score=0;renderQ();show('quiz')}
+function renderQ(){answered=false;const q=questions[qi];document.getElementById('qnum').textContent=`QUESTION ${qi+1} OF 5`;document.getElementById('bar').style.width=(qi/5*100)+'%';document.getElementById('question').textContent=q.q;document.getElementById('feedback').textContent='';document.getElementById('next').classList.add('hidden');const box=document.getElementById('answers');box.innerHTML='';q.a.forEach((a,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+'. '+a;b.onclick=()=>choose(i);box.appendChild(b)})}
+function choose(i){if(answered)return;answered=true;const q=questions[qi],buttons=[...document.querySelectorAll('.answer')];buttons.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.style.background='#c9f2c2';else if(j===i)b.style.background='#ffd5d8'});const f=document.getElementById('feedback');if(i===q.c){score++;f.textContent='Correct! Nice one! ⭐';f.className='feedback good'}else{f.textContent='Good try! The answer is '+q.a[q.c]+'.';f.className='feedback bad'}document.getElementById('bar').style.width=((qi+1)/5*100)+'%';document.getElementById('next').textContent=qi===4?'FINISH TRIVIA ▶':'NEXT QUESTION ▶';document.getElementById('next').classList.remove('hidden')}
+function nextQuestion(){qi++;if(qi<5)renderQ();else{document.getElementById('gameHelp').textContent=`Trivia complete! You got ${score} out of 5. Now collect 5 stars!`;show('gameIntro')}}
+// A small original platform game with classic 8-bit platformer feel.
+const canvas=document.getElementById('gameCanvas'),ctx=canvas.getContext('2d');let player,stars,foes,keys={},camera=0,won=false,lost=false,frame=0;
+const worldW=1450,groundY=258;
+function initWorld(){player={x:35,y:groundY-34,w:24,h:34,vx:0,vy:0,on:false};stars=[{x:180,y:190,t:0},{x:385,y:155,t:0},{x:620,y:190,t:0},{x:880,y:145,t:0},{x:1130,y:185,t:0}];foes=[{x:300,y:groundY-22,v:1.1,min:270,max:355},{x:735,y:groundY-22,v:1.35,min:690,max:800},{x:1010,y:groundY-22,v:1.2,min:970,max:1080}];camera=0;won=false;lost=false;frame=0;updateStars()}
+function updateStars(){document.getElementById('starCount').textContent=5-stars.length}
+function beginGame(){initWorld();show('game');if(!window.gameLoopStarted){window.gameLoopStarted=true;requestAnimationFrame(loop)}}
+function resetGame(){initWorld();document.getElementById('gameHelp').textContent='Collect all 5 stars, then reach the flag!';document.getElementById('restart').classList.add('hidden')}
+function keyDown(e){if(['ArrowLeft','ArrowRight','ArrowUp',' ','a','d','w'].includes(e.key)){e.preventDefault();keys[e.key.toLowerCase()]=true}}
+function keyUp(e){keys[e.key.toLowerCase()]=false}
+window.addEventListener('keydown',keyDown);window.addEventListener('keyup',keyUp);
+function bindHold(id,key){const el=document.getElementById(id);el.addEventListener('pointerdown',e=>{e.preventDefault();keys[key]=true;el.setPointerCapture(e.pointerId)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>el.addEventListener(ev,()=>keys[key]=false))}
+bindHold('left','arrowleft');bindHold('right','arrowright');document.getElementById('jump').addEventListener('pointerdown',e=>{e.preventDefault();keys.jump=true});document.getElementById('jump').addEventListener('pointerup',()=>keys.jump=false);document.getElementById('jump').addEventListener('pointercancel',()=>keys.jump=false);
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+function draw(){ctx.clearRect(0,0,640,300);ctx.save();ctx.translate(-camera,0);
+ // sky, clouds, distant hills
+ rect(camera,0,worldW,300,'#8edcf6');for(let x=40;x<worldW;x+=250){rect(x,42,54,15,'#fff');rect(x+13,29,37,15,'#fff');rect(x+40,42,34,15,'#fff');rect(x+55,55,20,6,'#fff')}
+ for(let x=0;x<worldW;x+=190){rect(x,215,100,45,'#9edb8b');rect(x+25,197,65,25,'#9edb8b')}
+ // floor and pits
+ rect(0,groundY,worldW,42,'#8a5836');rect(0,groundY,worldW,8,'#4eaa54');for(let x=0;x<worldW;x+=32){rect(x,groundY+13,18,4,'#a97549');rect(x+8,groundY+29,15,4,'#a97549')}
+ // platforms
+ [[235,205,90],[455,185,95],[690,205,95],[930,175,100],[1190,205,90]].forEach(p=>{rect(p[0],p[1],p[2],13,'#b87842');rect(p[0],p[1],p[2],5,'#f1c36b');for(let x=p[0]+8;x<p[0]+p[2];x+=23)rect(x,p[1]+7,4,4,'#87512f')});
+ // stars
+ stars.forEach(s=>{let y=s.y+Math.sin(frame/9+s.x)*4;ctx.fillStyle='#ffe34f';ctx.beginPath();for(let i=0;i<10;i++){let r=i%2?5:11,a=-Math.PI/2+i*Math.PI/5;let px=s.x+Math.cos(a)*r,py=y+Math.sin(a)*r;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();ctx.strokeStyle='#9b7620';ctx.lineWidth=2;ctx.stroke()});
+ // enemies
+ foes.forEach(f=>{rect(f.x,f.y+7,23,15,'#9b514b');rect(f.x+4,f.y,15,12,'#c46b5b');rect(f.x+5,f.y+8,4,5,'#fff');rect(f.x+15,f.y+8,4,5,'#fff');rect(f.x+7,f.y+9,2,3,'#24344a');rect(f.x+16,f.y+9,2,3,'#24344a')});
+ // finish flag
+ rect(1390,125,6,133,'#f7f1df');rect(1396,128,42,27,'#ff718b');rect(1417,128,21,13,'#fff');rect(1396,142,21,13,'#fff');rect(1390,258,38,8,'#8b5837');
+ // player
+ rect(player.x+4,player.y,16,8,'#e95d55');rect(player.x+2,player.y+7,20,7,'#f4c69c');rect(player.x+5,player.y+11,4,3,'#24344a');rect(player.x+16,player.y+11,4,3,'#24344a');rect(player.x+3,player.y+16,18,11,'#397fc3');rect(player.x,player.y+26,10,8,'#70452e');rect(player.x+14,player.y+26,10,8,'#70452e');
+ ctx.restore();}
+function loop(){frame++;if(document.getElementById('game').classList.contains('active')&&!won&&!lost){let left=keys.arrowleft||keys.a,right=keys.arrowright||keys.d,jump=keys.jump||keys.arrowup||keys.w||keys[' '];player.vx=left?-3.1:right?3.1:0;player.x=Math.max(0,Math.min(worldW-player.w,player.x+player.vx));if(jump&&player.on){player.vy=-9.7;player.on=false}player.vy+=.48;player.y+=player.vy;if(player.y+player.h>=groundY){player.y=groundY-player.h;player.vy=0;player.on=true}
+ // platform landing
+ [[235,205,90],[455,185,95],[690,205,95],[930,175,100],[1190,205,90]].forEach(p=>{if(player.vy>=0&&player.x+player.w>p[0]&&player.x<p[0]+p[2]&&player.y+player.h>=p[1]&&player.y+player.h-player.vy<=p[1]+5){player.y=p[1]-player.h;player.vy=0;player.on=true}});
+ stars=stars.filter(s=>{if(Math.abs((player.x+player.w/2)-s.x)<19&&Math.abs((player.y+player.h/2)-s.y)<24){updateStars();return false}return true});
+ foes.forEach(f=>{f.x+=f.v;if(f.x<f.min||f.x>f.max)f.v*=-1;if(player.x+player.w>f.x&&player.x<f.x+23&&player.y+player.h>f.y+5&&player.y<f.y+22){lost=true;document.getElementById('gameHelp').textContent='Oops! A little bump. Try the level again!';document.getElementById('restart').classList.remove('hidden')}});
+ camera=Math.max(0,Math.min(worldW-640,player.x-220));if(player.x>1370&&stars.length===0){won=true;document.getElementById('gameHelp').textContent='YOU DID IT! All stars collected! Your final surprise is ready.';setTimeout(()=>show('letter'),1100)}else if(player.x>1370&&stars.length>0){document.getElementById('gameHelp').textContent='Almost there! Collect every star before the flag!';player.x=1360}
+ draw();}else if(document.getElementById('game').classList.contains('active'))draw();requestAnimationFrame(loop)}
+</script>
+</body></html>
